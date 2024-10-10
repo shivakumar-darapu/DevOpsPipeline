@@ -50,4 +50,4 @@ jobs:
 
       - name: Push to another repository
         run: |
-          git push target_repo dev  # Change branches as needed
+          git push target_repo main  # Change branches as needed
