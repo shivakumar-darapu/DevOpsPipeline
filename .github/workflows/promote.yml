@@ -35,7 +35,9 @@ jobs:
       - name: Push Code To ETE
         env:
           REPO_URL: "https://github.com/shivakumar-darapu/DevOpsPipeline-ETE.git"
+          REPO_TOKEN: ${{ secrets.REPO_TOKEN }}
         run: |
+          git remote add target_repo https://x-access-token:${REPO_TOKEN}@${REPO_URL}
           git remote add target_repo $REPO_URL
           git push target_repo ${{ env.tag }}  # Push the tag
           git push target_repo dev:dev
