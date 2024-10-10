@@ -1,0 +1,38 @@
+# .github/workflows/tag-and-run.yml
+name: Tag and Run Script
+
+on:
+  push:
+    branches:
+      - dev
+
+jobs:
+  tag_and_run:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Step 1: Checkout the repository
+      - name: Clone repository
+        uses: actions/checkout@v3
+
+      # Step 2: Set up Git
+      - name: Set up Git
+        run: |
+          git config user.name "${{ github.actor }}"
+          git config user.email "${{ github.actor }}@users.noreply.github.com"
+
+      # Step 3: Create a new tag
+      - name: Create a tag
+        id: create_tag
+        run: |
+          TAG_NAME="v$(date +'%Y%m%d%H%M%S')"
+          git tag $TAG_NAME
+          git push origin $TAG_NAME
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      # Step 4: Run a script
+      - name: Run custom script
+        run: |
+          chmod +x ./script.sh
+          ./script.sh
