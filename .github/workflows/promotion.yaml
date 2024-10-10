@@ -1,0 +1,50 @@
+name: Dev to Test Tag and Merge
+
+on:
+  push:
+    branches:
+      - dev
+
+jobs:
+  create-tag-and-merge:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Get the latest version tag
+        id: get_latest_tag
+        run: |
+          latest_tag=$(git describe --tags `git rev-list --tags --max-count=1`)
+          echo "::set-output name=latest_tag::$latest_tag"
+
+      - name: Increment version
+        id: increment_version
+        run: |
+          latest_tag=${{ steps.get_latest_tag.outputs.latest_tag }}
+          base_tag="v1."
+          if [[ "$latest_tag" =~ ^v1\.([0-9]+)\.([0-9]+)$ ]]; then
+            major=1
+            minor="${BASH_REMATCH[1]}"
+            patch="${BASH_REMATCH[2]}"
+            new_patch=$((patch+1))
+            new_tag="v1.$minor.$new_patch"
+          else
+            new_tag="v1.0.0"
+          fi
+          echo "::set-output name=new_tag::$new_tag"
+      
+      - name: Create and push new tag
+        run: |
+          new_tag=${{ steps.increment_version.outputs.new_tag }}
+          git config user.name "github-actions"
+          git config user.email "github-actions@github.com"
+          git tag $new_tag
+          git push origin $new_tag
+
+      - name: Merge dev into test
+        run: |
+          git checkout test
+          git merge dev --no-ff --commit -m "Merging changes from dev to test"
+          git push origin test
