@@ -37,10 +37,11 @@ jobs:
           REPO_URL: "shivakumar-darapu/DevOpsPipeline-ETE"
           REPO_TOKEN: ${{ secrets.REPO_TOKEN }}
         run: |
+          FULL_REPO_URL="https://x-access-token:${REPO_TOKEN}@github.com/${REPO_URL}.git"
           if git remote get-url target_repo; then
-            git remote set-url target_repo https://x-access-token:${REPO_TOKEN}@${REPO_URL}
+            git remote set-url target_repo $FULL_REPO_URL
           else
-            git remote add target_repo https://x-access-token:${REPO_TOKEN}@${REPO_URL}
+            git remote add target_repo $FULL_REPO_URL
           fi
-          git push target_repo ${{ env.tag }}  # Push the tag
+          # git push target_repo ${{ env.tag }}  # Push the tag
           git push target_repo dev:dev
