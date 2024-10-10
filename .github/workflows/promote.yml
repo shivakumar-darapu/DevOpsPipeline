@@ -32,6 +32,7 @@ jobs:
           git push origin $TAG_NAME
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          
       - name: Push Code To ETE
         env:
           REPO_URL: "shivakumar-darapu/DevOpsPipeline-ETE"
@@ -49,4 +50,4 @@ jobs:
 
       - name: Push to another repository
         run: |
-          git push target_repo main:dev  # Change branches as needed
+          git push target_repo dev:dev  # Change branches as needed
