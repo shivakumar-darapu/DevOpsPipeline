@@ -27,12 +27,12 @@ jobs:
       - name: Create a tag
         id: create_tag
         run: |
-          TAG_NAME="$tag-${{ date }}"
+          TAG_NAME="$tag-$date"
           git tag $TAG_NAME
           git push origin $TAG_NAME
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          
+
       - name: Push Code To ETE
         env:
           REPO_URL: "shivakumar-darapu/DevOpsPipeline-ETE"
