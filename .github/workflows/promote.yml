@@ -20,8 +20,8 @@ jobs:
       # Step 2: Set up Git
       - name: Set up Git
         run: |
-          git config user.name "${{ github.actor }}"
-          git config user.email "${{ github.actor }}@users.noreply.github.com"
+          git config user.name "shivakumar-darapu"
+          git config user.email "darapushivakumar@gmail.com"
 
       # Step 3: Create a new tag
       - name: Create a tag
