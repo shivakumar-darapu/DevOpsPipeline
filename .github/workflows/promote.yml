@@ -47,7 +47,8 @@ jobs:
       
       - name: Debug Remote
         run: git remote -v  # To verify the remote is set correctly
-
+      - name: List Branches
+        run: git branch -a 
       - name: Push to another repository
         run: |
           echo "TARGET_BRANCH=dev" >> $GITHUB_ENV
