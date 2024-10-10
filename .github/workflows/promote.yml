@@ -5,6 +5,8 @@ on:
   push:
     branches:
       - dev
+env:
+  tag: v-1.0.0
 
 jobs:
   tag_and_run:
@@ -25,14 +27,15 @@ jobs:
       - name: Create a tag
         id: create_tag
         run: |
-          TAG_NAME="v$(date +'%Y%m%d%H%M%S')"
+          TAG_NAME="$tag"
           git tag $TAG_NAME
           git push origin $TAG_NAME
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-      # Step 4: Run a script
-      - name: Run custom script
+      - name: Push Code To ETE
+        env:
+          REPO_URL: "https://github.com/shivakumar-darapu/DevOpsPipeline-ETE.git"
         run: |
-          chmod +x ./script.sh
-          ./script.sh
+          git remote add target_repo $REPO_URL
+          git push target_repo ${{ env.tag }}  # Push the tag
+          git push target_repo dev:dev
