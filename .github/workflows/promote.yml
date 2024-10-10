@@ -6,7 +6,7 @@ on:
     branches:
       - dev
 env:
-  tag: v-1.0.1
+  tag: v-1.0.2
 
 jobs:
   tag_and_run:
@@ -45,3 +45,5 @@ jobs:
           fi
           # git push target_repo ${{ env.tag }}  # Push the tag
           git push target_repo dev:dev
+      - name: Debug Remote
+        run: git remote -v
