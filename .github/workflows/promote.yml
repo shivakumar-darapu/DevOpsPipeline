@@ -20,14 +20,14 @@ jobs:
       # Step 2: Set up Git
       - name: Set up Git
         run: |
-          git config user.name "shivakumar-darapu"
-          git config user.email "darapushivakumar@gmail.com"
+          git config --local user.name "shivakumar-darapu"
+          git config --local user.email "darapushivakumar@gmail.com"
 
       # Step 3: Create a new tag
       - name: Create a tag
         id: create_tag
         run: |
-          TAG_NAME="$tag"
+          TAG_NAME="$tag-${{ date }}"
           git tag $TAG_NAME
           git push origin $TAG_NAME
         env:
@@ -43,7 +43,10 @@ jobs:
           else
             git remote add target_repo $FULL_REPO_URL
           fi
-          # git push target_repo ${{ env.tag }}  # Push the tag
-          git push target_repo dev:dev
+      
       - name: Debug Remote
-        run: git remote -v
+        run: git remote -v  # To verify the remote is set correctly
+
+      - name: Push to another repository
+        run: |
+          git push target_repo main:dev  # Change branches as needed
