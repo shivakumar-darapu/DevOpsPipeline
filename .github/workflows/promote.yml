@@ -6,7 +6,7 @@ on:
     branches:
       - dev
 env:
-  tag: v-1.0.2
+  tag: v-1.0.3
 
 jobs:
   tag_and_run:
